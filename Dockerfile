@@ -1,5 +1,4 @@
-# Use the official Ubuntu 20.04 base image
-FROM ubuntu:22.04
+FROM python:3.12.4
 
 # Set environment variables
 # PYTHONDONTWRITEBYTECODE: Prevents Python from writing .pyc files to disk
