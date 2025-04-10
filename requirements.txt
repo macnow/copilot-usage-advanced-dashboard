@@ -1,4 +1,4 @@
-elasticsearch
+elasticsearch<7.14.0
 requests
 tzlocal
 tzdata

@@ -560,7 +560,8 @@ class ElasticsearchManager:
             logger.info(f"Using basic authentication for Elasticsearch")
             self.es = Elasticsearch(
                 Paras.elasticsearch_url,
-                basic_auth=(Paras.elasticsearch_user, Paras.elasticsearch_pass)
+                basic_auth=(Paras.elasticsearch_user, Paras.elasticsearch_pass),
+                ca_certs="/etc/ssl/certs/ca-certificates.crt"
             )
         self.check_and_create_indexes()
 
@@ -603,10 +604,10 @@ class ElasticsearchManager:
                     logger.info(f'[partial update] to [{index_name}]: {doc_id} - preserving fields: {list(update_condition.keys())}')
 
             # Always update document, possibly with some preserved fields
-            self.es.update(index=index_name, id=doc_id, doc=data)
+            self.es.update(index=index_name, id=doc_id, body={ "doc": data })
             logger.info(f'[updated] to [{index_name}]: {data}')
         except NotFoundError:
-            self.es.index(index=index_name, id=doc_id, document=data)
+            self.es.create(index=index_name, id=doc_id, body=data)
             logger.info(f'[created] to [{index_name}]: {data}')
 
 def main(organization_slug):
